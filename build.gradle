@@ -1,0 +1,46 @@
+plugins {
+	id 'org.springframework.boot' version '2.1.7.RELEASE'
+	id 'java'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.ha'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '12'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+task hello() {
+	doFirst{
+		println("Hi?")
+	}
+
+	doLast {
+		println("end..")
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
+	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	//implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.1.6.RELEASE'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	runtimeOnly 'mysql:mysql-connector-java'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+}
