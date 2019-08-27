@@ -46,7 +46,7 @@ public class UserModel implements Serializable {
     @NotNull
     @Enumerated(EnumType.STRING)
     private PROVIDER provider;
-
+    
     private String providerId;
 
     public Long getId() {

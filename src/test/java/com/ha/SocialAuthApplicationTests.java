@@ -8,6 +8,7 @@ import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.client.RestTemplate;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -32,4 +33,9 @@ public class SocialAuthApplicationTests {
 		return null;
 	}
 
+	@Test
+	public void post() {
+		RestTemplate template = new RestTemplate();
+//		template.exchange(requestEntity, responseType)
+	}
 }

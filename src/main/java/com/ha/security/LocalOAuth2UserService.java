@@ -42,8 +42,8 @@ public class LocalOAuth2UserService extends DefaultOAuth2UserService {
         if(StringUtils.isEmpty(oAuth2UserInfo.getEmail())) {
             throw new OAuth2AuthenticationProcessingException("Email not found from OAuth2 provider");
         }
-
-        Optional<UserModel> userOptional = userRepository.findByEmail(oAuth2UserInfo.getEmail());
+        PROVIDER provider = PROVIDER.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId().toUpperCase());
+        Optional<UserModel> userOptional = userRepository.findByEmailAndProvider(oAuth2UserInfo.getEmail(), provider);
         UserModel user;
         if(userOptional.isPresent()) {
             user = userOptional.get();
