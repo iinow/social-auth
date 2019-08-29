@@ -1,4 +1,4 @@
-package com.ha.controller;
+package com.ha.api.user;
 
 import java.security.Principal;
 

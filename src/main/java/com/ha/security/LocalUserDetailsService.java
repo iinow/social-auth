@@ -7,9 +7,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ha.entity.UserModel;
+import com.ha.api.user.UserRepository;
+import com.ha.entity.User;
 import com.ha.exception.ResourceNotFoundException;
-import com.ha.repository.UserRepository;
 
 @Service
 public class LocalUserDetailsService implements UserDetailsService {
@@ -21,7 +21,7 @@ public class LocalUserDetailsService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String email)
             throws UsernameNotFoundException {
-        UserModel user = userRepository.findByEmail(email)
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User not found with email : " + email)
         );
@@ -31,7 +31,7 @@ public class LocalUserDetailsService implements UserDetailsService {
 
     @Transactional
     public UserDetails loadUserById(Long id) {
-    	UserModel user = userRepository.findById(id).orElseThrow(
+    	User user = userRepository.findById(id).orElseThrow(
             () -> new ResourceNotFoundException("User", "id", id)
         );
 

@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
-import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -14,9 +13,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
 import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizationRequestRepository;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.ha.security.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.ha.security.LocalOAuth2UserService;
+import com.ha.security.filter.TokenAuthenticationFilter;
 import com.ha.security.handler.OAuth2AuthenticationFailureHandler;
 import com.ha.security.handler.OAuth2AuthenticationSuccessHandler;
 
@@ -34,7 +35,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		// TODO Auto-generated method stub
 		super.configure(web);
 	}
 
@@ -73,6 +73,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //				.authorizedClientRepository(null)
 //				.authorizedClientService(null)
 //				.clientRegistrationRepository(null);
+		http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
 	
 	@Override
@@ -94,5 +95,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
     public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
         return new HttpCookieOAuth2AuthorizationRequestRepository();
+    }
+	
+	@Bean
+    public TokenAuthenticationFilter tokenAuthenticationFilter() {
+        return new TokenAuthenticationFilter();
     }
 }

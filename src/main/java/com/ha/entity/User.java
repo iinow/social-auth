@@ -1,6 +1,8 @@
 package com.ha.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,9 +11,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -21,7 +23,7 @@ import com.ha.common.Define.PROVIDER;
 @Table(name = "o_users", uniqueConstraints = {
         @UniqueConstraint(columnNames = "email")
 })
-public class UserModel implements Serializable {
+public class User implements Serializable {
 	private static final long serialVersionUID = -5821028760747054958L;
 
 	@Id
@@ -48,6 +50,9 @@ public class UserModel implements Serializable {
     private PROVIDER provider;
     
     private String providerId;
+    
+    @OneToMany(mappedBy = "user")
+    private List<Memo> memos = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -112,4 +117,12 @@ public class UserModel implements Serializable {
     public void setProviderId(String providerId) {
         this.providerId = providerId;
     }
+
+	public List<Memo> getMemos() {
+		return memos;
+	}
+
+	public void setMemos(List<Memo> memos) {
+		this.memos = memos;
+	}
 }

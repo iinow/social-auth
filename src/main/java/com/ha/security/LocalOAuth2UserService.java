@@ -12,10 +12,10 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.ha.api.user.UserRepository;
 import com.ha.common.Define.PROVIDER;
-import com.ha.entity.UserModel;
+import com.ha.entity.User;
 import com.ha.exception.OAuth2AuthenticationProcessingException;
-import com.ha.repository.UserRepository;
 import com.ha.security.oauth2.provider.OAuth2UserInfo;
 
 @Service
@@ -43,8 +43,8 @@ public class LocalOAuth2UserService extends DefaultOAuth2UserService {
             throw new OAuth2AuthenticationProcessingException("Email not found from OAuth2 provider");
         }
         PROVIDER provider = PROVIDER.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId().toUpperCase());
-        Optional<UserModel> userOptional = userRepository.findByEmailAndProvider(oAuth2UserInfo.getEmail(), provider);
-        UserModel user;
+        Optional<User> userOptional = userRepository.findByEmailAndProvider(oAuth2UserInfo.getEmail(), provider);
+        User user;
         if(userOptional.isPresent()) {
             user = userOptional.get();
             if(!user.getProvider().equals(PROVIDER.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId().toUpperCase()))) {
@@ -63,8 +63,8 @@ public class LocalOAuth2UserService extends DefaultOAuth2UserService {
     /**
      * Provider 로 회원가입된 애들 등록!
      * */
-    private UserModel registerNewUser(OAuth2UserRequest oAuth2UserRequest, OAuth2UserInfo oAuth2UserInfo) {
-    	UserModel user = new UserModel();
+    private User registerNewUser(OAuth2UserRequest oAuth2UserRequest, OAuth2UserInfo oAuth2UserInfo) {
+    	User user = new User();
 
         user.setProvider(PROVIDER.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId().toUpperCase()));
         user.setProviderId(oAuth2UserInfo.getId());
@@ -77,7 +77,7 @@ public class LocalOAuth2UserService extends DefaultOAuth2UserService {
     /**
      * Provider 로 회원가입한 애들 업데이트
      * */
-    private UserModel updateExistingUser(UserModel existingUser, OAuth2UserInfo oAuth2UserInfo) {
+    private User updateExistingUser(User existingUser, OAuth2UserInfo oAuth2UserInfo) {
         existingUser.setName(oAuth2UserInfo.getName());
         existingUser.setImageUrl(oAuth2UserInfo.getImageUrl());
         return userRepository.save(existingUser);
